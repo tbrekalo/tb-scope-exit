@@ -34,7 +34,7 @@ TEST_CASE("tb::scope_exit active", "[scope_exit][active]") {
   REQUIRE(x == 42U);
 }
 
-TEST_CASE("tb::scope_exit active", "[scope_exit][active]") {
+TEST_CASE("tb::scope_exit released", "[scope_exit][released]") {
   auto x = 0U;
   SECTION("nothrow") {
     REQUIRE_NOTHROW([&x]() -> void {
