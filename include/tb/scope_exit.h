@@ -26,7 +26,7 @@ class scope_guard {
 
   scope_guard(scope_guard&& that) noexcept
       : exit_fn_(std::move(that.exit_fn_)),
-        enabled_(std::exchange(that.enabled_), false) {}
+        enabled_(std::exchange(that.enabled_, false)) {}
   auto operator=(scope_guard&& that) = delete;
 
   ~scope_guard() {
@@ -34,6 +34,8 @@ class scope_guard {
       exit_fn_();
     }
   }
+
+  auto release() noexcept -> void { enabled_ = false; }
 };
 
 }  // namespace tb::detail

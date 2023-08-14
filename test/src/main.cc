@@ -9,9 +9,9 @@ class strong_exception : std::runtime_error {
       : std::runtime_error(what) {}
 };
 
-TEST_CASE("tb::scope_exit") {
+TEST_CASE("tb::scope_exit active", "[scope_exit][active]") {
   auto x = 0U;
-  SECTION("tb::scope_exit nothrow") {
+  SECTION("nothrow") {
     REQUIRE_NOTHROW([&x]() -> void {
       auto scope_exit =
           tb::make_scope_exit([&x]() noexcept -> void { x = 42; });
@@ -19,7 +19,7 @@ TEST_CASE("tb::scope_exit") {
     }());
   }
 
-  SECTION("tb::scope_exit throws") {
+  SECTION("throws") {
     REQUIRE_THROWS_AS(
         [&x]() -> void {
           auto scope_exit =
@@ -34,3 +34,30 @@ TEST_CASE("tb::scope_exit") {
   REQUIRE(x == 42U);
 }
 
+TEST_CASE("tb::scope_exit active", "[scope_exit][active]") {
+  auto x = 0U;
+  SECTION("nothrow") {
+    REQUIRE_NOTHROW([&x]() -> void {
+      auto scope_exit =
+          tb::make_scope_exit([&x]() noexcept -> void { x = 42; });
+      scope_exit.release();
+
+      CHECK(x == 0U);
+    }());
+  }
+
+  SECTION("throws") {
+    REQUIRE_THROWS_AS(
+        [&x]() -> void {
+          auto scope_exit =
+              tb::make_scope_exit([&x]() noexcept -> void { x = 42U; });
+          scope_exit.release();
+
+          CHECK(x == 0U);
+          throw strong_exception();
+        }(),
+        strong_exception);
+  }
+
+  REQUIRE(x == 0U);
+}
