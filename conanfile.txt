@@ -1,0 +1,10 @@
+[requires]
+catch2/3.0.1
+
+[tool_requires]
+cmake/[>=3.26]
+ninja/[>=1.11]
+
+[generators]
+CMakeDeps
+CMakeToolchain

@@ -13,8 +13,6 @@ jobs:
       fail-fast: false
       matrix:
         image:
-          - gcc9
-          - gcc10
           - gcc11
 
         build-type:
@@ -29,7 +27,13 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: configure
-        run: cmake -B build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
+        run: |
+          mkdir build && cd build
+          conan install .. --output-folder=. --build=missing -s build_type=${{matrix.build-type}}
+          cmake .. \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=${{matrix.build-type}} \
+            -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake
 
       - name: build
         run: cmake --build build
