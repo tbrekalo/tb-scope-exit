@@ -1,0 +1,38 @@
+name: CI
+run-name: ${{ github.actor }}
+on: push
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  test-linux:
+    name: test-linux
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - gcc9
+          - gcc10
+          - gcc11
+
+        build-type:
+          - Debug
+
+    runs-on: ubuntu-latest
+    container:
+      image: conanio/${{matrix.image}}
+      options: --user root
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
+
+      - name: build
+        run: cmake --build build
+
+      - name: run-tests
+        run: ./build/tb_scope_exit_test
