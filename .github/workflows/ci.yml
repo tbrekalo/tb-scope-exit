@@ -13,27 +13,24 @@ jobs:
       fail-fast: false
       matrix:
         image:
-          - gcc11
+          - gcc:13
 
         build-type:
           - Debug
 
     runs-on: ubuntu-latest
     container:
-      image: conanio/${{matrix.image}}
+      image: ${{matrix.image}}
       options: --user root
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: install-ninj-cmake
+        run: apt-get update && apt-get install -y ninja-build cmake
 
       - name: configure
-        run: |
-          mkdir build && cd build
-          conan install .. --output-folder=. --build=missing -s build_type=${{matrix.build-type}}
-          cmake .. \
-            -G Ninja \
-            -DCMAKE_BUILD_TYPE=${{matrix.build-type}} \
-            -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake
+        run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
 
       - name: build
         run: cmake --build build
