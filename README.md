@@ -15,7 +15,7 @@ C++20 scope guard implementation. Why another one? Life is too short not to have
 - c++20 concepts
 - taking advantage of [lambdas in unevaluated context](https://wg21.link/P0315R4) allows for some new TMP trickery
 
-```c++23
+```c++
 using exit_policy = predicate_policy<
     decltype([]([[maybe_unused]] int n_past_exceptions) noexcept
              -> bool { return true; }),
