@@ -1,3 +1,4 @@
-#include "catch2/catch_test_macros.hpp"
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest/doctest.h"
 
 TEST_CASE("basic") { REQUIRE(2 == 2); }

@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: install-ninj-cmake
-        run: apt-get update && apt-get install -y ninja-build cmake
+        run: apt-get update && apt-get install -y ninja-build cmake doctest
 
       - name: configure
         run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
