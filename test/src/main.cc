@@ -1,5 +1,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest/doctest.h"
+#include "tb/scope_exit.h"
 
 // exception class used for tests
 class strong_exception : std::runtime_error {
@@ -9,9 +10,9 @@ class strong_exception : std::runtime_error {
       : std::runtime_error(what) {}
 };
 
-TEST_CASE("tb::scope_exit active", "[scope_exit][active]") {
+TEST_CASE("tb::scope_exit active") {
   auto x = 0U;
-  SECTION("nothrow") {
+  SUBCASE("nothrow") {
     REQUIRE_NOTHROW([&x]() -> void {
       auto scope_exit =
           tb::make_scope_exit([&x]() noexcept -> void { x = 42; });
@@ -19,7 +20,7 @@ TEST_CASE("tb::scope_exit active", "[scope_exit][active]") {
     }());
   }
 
-  SECTION("throws") {
+  SUBCASE("throws") {
     REQUIRE_THROWS_AS(
         [&x]() -> void {
           auto scope_exit =
@@ -34,9 +35,9 @@ TEST_CASE("tb::scope_exit active", "[scope_exit][active]") {
   REQUIRE(x == 42U);
 }
 
-TEST_CASE("tb::scope_exit released", "[scope_exit][released]") {
+TEST_CASE("tb::scope_exit released") {
   auto x = 0U;
-  SECTION("nothrow") {
+  SUBCASE("nothrow") {
     REQUIRE_NOTHROW([&x]() -> void {
       auto scope_exit =
           tb::make_scope_exit([&x]() noexcept -> void { x = 42; });
@@ -46,7 +47,7 @@ TEST_CASE("tb::scope_exit released", "[scope_exit][released]") {
     }());
   }
 
-  SECTION("throws") {
+  SUBCASE("throws") {
     REQUIRE_THROWS_AS(
         [&x]() -> void {
           auto scope_exit =

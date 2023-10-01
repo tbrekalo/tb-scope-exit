@@ -10,4 +10,4 @@ if(NOT doctest_GOUNF)
 endif()
 
 add_executable(tb_scope_exit_test ${CMAKE_CURRENT_LIST_DIR}/src/main.cc)
-target_link_libraries(tb_scope_exit_test PRIVATE doctest::doctest)
+target_link_libraries(tb_scope_exit_test PRIVATE doctest::doctest tb_scope_exit)
