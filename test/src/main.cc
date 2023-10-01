@@ -62,3 +62,111 @@ TEST_CASE("tb::scope_exit released") {
 
   REQUIRE(x == 0U);
 }
+
+TEST_CASE("tb::scope_success") {
+  auto x = 0U;
+  SUBCASE("nothrow") {
+    REQUIRE_NOTHROW([&x]() -> void {
+      auto scope_exit =
+          tb::make_scope_success([&x]() noexcept -> void { x = 42; });
+      CHECK(x == 0U);
+    }());
+
+    REQUIRE(x == 42U);
+  }
+
+  SUBCASE("throws") {
+    REQUIRE_THROWS_AS(
+        [&x]() -> void {
+          auto scope_exit =
+              tb::make_scope_success([&x]() noexcept -> void { x = 42U; });
+          CHECK(x == 0U);
+          throw strong_exception();
+        }(),
+        strong_exception);
+    REQUIRE(x == 0U);
+  }
+}
+
+TEST_CASE("tb::scope_success released") {
+  auto x = 0U;
+  SUBCASE("nothrow") {
+    REQUIRE_NOTHROW([&x]() -> void {
+      auto scope_exit =
+          tb::make_scope_success([&x]() noexcept -> void { x = 42; });
+      scope_exit.release();
+
+      CHECK(x == 0U);
+    }());
+
+    REQUIRE(x == 0U);
+  }
+
+  SUBCASE("throws") {
+    REQUIRE_THROWS_AS(
+        [&x]() -> void {
+          auto scope_exit =
+              tb::make_scope_success([&x]() noexcept -> void { x = 42U; });
+          scope_exit.release();
+
+          CHECK(x == 0U);
+          throw strong_exception();
+        }(),
+        strong_exception);
+    REQUIRE(x == 0U);
+  }
+}
+
+TEST_CASE("tb::scope_fail") {
+  auto x = 0U;
+  SUBCASE("nothrow") {
+    REQUIRE_NOTHROW([&x]() -> void {
+      auto scope_exit =
+          tb::make_scope_fail([&x]() noexcept -> void { x = 42; });
+      CHECK(x == 0U);
+    }());
+
+    REQUIRE(x == 0U);
+  }
+
+  SUBCASE("throws") {
+    REQUIRE_THROWS_AS(
+        [&x]() -> void {
+          auto scope_exit =
+              tb::make_scope_fail([&x]() noexcept -> void { x = 42U; });
+          CHECK(x == 0U);
+          throw strong_exception();
+        }(),
+        strong_exception);
+    REQUIRE(x == 42U);
+  }
+}
+
+TEST_CASE("tb::scope_fail released") {
+  auto x = 0U;
+  SUBCASE("nothrow") {
+    REQUIRE_NOTHROW([&x]() -> void {
+      auto scope_exit =
+          tb::make_scope_fail([&x]() noexcept -> void { x = 42; });
+      scope_exit.release();
+
+      CHECK(x == 0U);
+    }());
+
+    REQUIRE(x == 0U);
+  }
+
+  SUBCASE("throws") {
+    REQUIRE_THROWS_AS(
+        [&x]() -> void {
+          auto scope_exit =
+              tb::make_scope_fail([&x]() noexcept -> void { x = 42U; });
+          scope_exit.release();
+
+          CHECK(x == 0U);
+          throw strong_exception();
+        }(),
+        strong_exception);
+    REQUIRE(x == 0U);
+  }
+}
