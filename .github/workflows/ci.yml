@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         image:
-          - gcc:13
+          - gcc:10
 
         build-type:
           - Debug
