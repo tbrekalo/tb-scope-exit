@@ -1,5 +1,5 @@
-#include "catch2/catch_test_macros.hpp"
-#include "tb/scope_exit.h"
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest/doctest.h"
 
 // exception class used for tests
 class strong_exception : std::runtime_error {

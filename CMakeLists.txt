@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.18)
 project(tb_scope_exit VERSION 0.1)
 
 set(CMAKE_CXX_STANDARD 20)
-option(TB_SCOPE_EXIT_BUILD_TEST "Build catch2 tests" OFF)
+option(TB_SCOPE_EXIT_BUILD_TEST "Build tests" OFF)
 if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
   set(TB_SCOPE_EXIT_BUILD_TEST ON)
 endif()
