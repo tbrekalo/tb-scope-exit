@@ -32,7 +32,7 @@ FetchContent_Declare(
   tb_scope_exit
   GIT_REPOSITORY https://github.com/tbrekalo/tb-scope-exit
   GIT_TAG master)
-FetchContent_MakeAvailable(doctest)
+FetchContent_MakeAvailable(tb_scope_exit)
 
 
 target_link_libraries(your-target PRIVATE tb_scope_exit)
