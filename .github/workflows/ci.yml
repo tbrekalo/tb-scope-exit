@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: install-ninj-cmake
+      - name: install-ninja-cmake
         run: apt-get update && apt-get install -y ninja-build cmake doctest
 
       - name: configure
